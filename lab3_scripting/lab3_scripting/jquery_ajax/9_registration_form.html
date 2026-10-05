@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registration Form Validation</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .field { margin-bottom: 10px; }
+        label { display: inline-block; width: 100px; }
+        .error { color: red; font-size: 0.9em; display: block; margin-left: 105px; }
+    </style>
+</head>
+<body>
+
+<h2>Registration Form</h2>
+<form id="regForm">
+    <div class="field">
+        <label>Name:</label>
+        <input type="text" id="name">
+        <span class="error" id="nameError"></span>
+    </div>
+    <div class="field">
+        <label>Address:</label>
+        <input type="text" id="address">
+        <span class="error" id="addressError"></span>
+    </div>
+    <div class="field">
+        <label>Username:</label>
+        <input type="text" id="username">
+        <span class="error" id="usernameError"></span>
+    </div>
+    <div class="field">
+        <label>Email:</label>
+        <input type="text" id="email">
+        <span class="error" id="emailError"></span>
+    </div>
+    <div class="field">
+        <label>Password:</label>
+        <input type="password" id="password">
+        <span class="error" id="passwordError"></span>
+    </div>
+    <div class="field">
+        <label>Website:</label>
+        <input type="text" id="website">
+    </div>
+    <div class="field">
+        <label>Phone:</label>
+        <input type="text" id="phone">
+        <span class="error" id="phoneError"></span>
+    </div>
+    <div class="field">
+        <label>Gender:</label>
+        <input type="radio" name="gender" value="male"> Male
+        <input type="radio" name="gender" value="female"> Female
+        <span class="error" id="genderError"></span>
+    </div>
+    <div class="field">
+        <label>Course:</label>
+        <select id="course">
+            <option value="">-- Select --</option>
+            <option value="BCA">BCA</option>
+            <option value="BIT">BIT</option>
+            <option value="BSc.CSIT">BSc.CSIT</option>
+        </select>
+        <span class="error" id="courseError"></span>
+    </div>
+    <button type="submit">Register</button>
+</form>
+
+<script>
+$(document).ready(function() {
+    $("#regForm").submit(function(e) {
+        e.preventDefault();
+        let valid = true;
+        $(".error").text(""); // clear old errors
+
+        // Name: not empty, no numbers
+        const name = $("#name").val().trim();
+        if (name === "" || /\d/.test(name)) {
+            $("#nameError").text("Name is required and must not contain numbers.");
+            valid = false;
+        }
+
+        // Address: not empty
+        if ($("#address").val().trim() === "") {
+            $("#addressError").text("Address is required.");
+            valid = false;
+        }
+
+        // Username: not empty, no spaces/special chars except underscore
+        const username = $("#username").val().trim();
+        if (username === "" || !/^[a-zA-Z0-9_]+$/.test(username)) {
+            $("#usernameError").text("Username is required, no spaces/special chars (underscore allowed).");
+            valid = false;
+        }
+
+        // Email: not empty, contains "@"
+        const email = $("#email").val().trim();
+        if (email === "" || email.indexOf("@") === -1) {
+            $("#emailError").text("A valid email with '@' is required.");
+            valid = false;
+        }
+
+        // Password: min 8 chars, 1 digit, 1 upper, 1 lower, 1 special char
+        const password = $("#password").val();
+        const passPattern = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).{8,}$/;
+        if (!passPattern.test(password)) {
+            $("#passwordError").text("Min 8 chars, 1 digit, 1 upper, 1 lower, 1 special char.");
+            valid = false;
+        }
+
+        // Phone: not empty, only numbers, starts with 98/97/96
+        const phone = $("#phone").val().trim();
+        if (!/^(98|97|96)\d+$/.test(phone)) {
+            $("#phoneError").text("Phone must be digits only, starting with 98, 97, or 96.");
+            valid = false;
+        }
+
+        // Gender
+        if ($("input[name='gender']:checked").length === 0) {
+            $("#genderError").text("Please select a gender.");
+            valid = false;
+        }
+
+        // Course
+        if ($("#course").val() === "") {
+            $("#courseError").text("Please select a course.");
+            valid = false;
+        }
+
+        if (valid) {
+            alert("Form submitted successfully!");
+            // this.submit(); // uncomment to actually submit to a backend
+        }
+    });
+});
+</script>
+
+</body>
+</html>

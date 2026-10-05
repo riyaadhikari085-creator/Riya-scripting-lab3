@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Load BCA Description via AJAX</title>
+</head>
+<body>
+
+<h2>About BCA</h2>
+<button onclick="loadContent()">Load Description</button>
+<div id="content" style="margin-top: 15px; white-space: pre-wrap;"></div>
+
+<script>
+function loadContent() {
+    const xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            document.getElementById("content").innerHTML = this.responseText;
+        } else if (this.readyState === 4 && this.status !== 200) {
+            document.getElementById("content").innerHTML = "Error loading file.";
+        }
+    };
+    xhttp.open("GET", "bca.txt", true);
+    xhttp.send();
+}
+</script>
+
+</body>
+</html>

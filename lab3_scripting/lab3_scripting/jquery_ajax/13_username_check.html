@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Check Username Availability</title>
+</head>
+<body>
+
+<h2>Password Reset - Enter Username</h2>
+<input type="text" id="username" onkeyup="checkUsername()" placeholder="Enter username">
+<p id="result"></p>
+
+<script>
+function checkUsername() {
+    const username = document.getElementById("username").value.trim();
+
+    if (username === "") {
+        document.getElementById("result").innerHTML = "";
+        return;
+    }
+
+    const xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            document.getElementById("result").innerHTML = this.responseText;
+        }
+    };
+    xhttp.open("GET", "13_check_username.php?username=" + encodeURIComponent(username), true);
+    xhttp.send();
+}
+</script>
+
+</body>
+</html>
